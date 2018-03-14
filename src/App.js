@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
+import {connect} from "react-redux";
 
 class App extends Component {
     // constructor(props) {
@@ -20,25 +21,44 @@ class App extends Component {
                 console.log(`${xhr.status} ${xhr.statusText}`);
             } else {
                 objResponse = JSON.parse(xhr.responseText);
-                console.log("xhr.responseText", objResponse);
+                // console.log("xhr.responseText", objResponse);
                 // console.log("xhr.responseText", xhr.responseText);
             }
         }
     }
 
+    addTrack = () => {
+        console.log("fdfs", this.trackInput.value);
+        this.props.onAddTrack(this.trackInput.value);
+        this.trackInput.value  = "";
+    };
+
     render() {
+        console.log("this.props.testStore", this.props.testStore);
         return (
             <div className="App">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo"/>
-                    <h1 className="App-title">Welcome to React</h1>
-                </header>
-                <p className="App-intro">
-                    To get started, edit <code>src/App.js</code> and save to reload.
-                </p>
+                <input type="text" className="trackInput" ref={(input) => {
+                    this.trackInput = input
+                }}/>
+                <button onClick={this.addTrack} className="addTrack" type="button">Add</button>
+                <ul>
+                    {this.props.testStore.map((track, index) =>
+                        <li key={index}>{track}</li>
+                    )}
+                </ul>
             </div>
         );
     }
 }
 
-export default App;
+
+export default connect(
+    state => ({
+        testStore: state
+    }),
+    dispatch => ({
+        onAddTrack: (trackName) => {
+            dispatch({type: "ADD_TRACK", payload: trackName});
+        }
+    })
+)(App);
