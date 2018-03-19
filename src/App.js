@@ -28,25 +28,24 @@ class App extends Component {
     }
 
     addTrack = () => {
-        console.log("fdfs", this.trackInput.value);
+        console.log("addTrack", this.trackInput.value);
         this.props.onAddTrack(this.trackInput.value);
-        this.trackInput.value  = "";
+        this.trackInput.value = "";
     };
-
     render() {
-        console.log("this.props.testStore", this.props.testStore);
+        console.log("this.props", this.props);
         return (
+
             <div className="App">
-                <input type="text" className="trackInput" ref={(input) => {
-                    this.trackInput = input
-                }}/>
-                <button onClick={this.addTrack} className="addTrack" type="button">Add</button>
+                <input type="text" ref={(input) => {this.trackInput = input}}/>
+                <button onClick={this.addTrack}>Add track</button>
                 <ul>
                     {this.props.testStore.map((track, index) =>
                         <li key={index}>{track}</li>
                     )}
                 </ul>
             </div>
+
         );
     }
 }
@@ -58,7 +57,7 @@ export default connect(
     }),
     dispatch => ({
         onAddTrack: (trackName) => {
-            dispatch({type: "ADD_TRACK", payload: trackName});
+            dispatch({type: "ADD_TRACK", payload: trackName})
         }
     })
 )(App);
